@@ -1,5 +1,6 @@
 # CakePdf plugin
 
+This project is a fork of https://github.com/FriendsOfCake/CakePdf made especially for mpdf
 
 [![Build Status](https://img.shields.io/travis/FriendsOfCake/CakePdf/master.svg?style=flat-square)](https://travis-ci.org/FriendsOfCake/CakePdf)
 [![Total Downloads](https://img.shields.io/packagist/dt/friendsofcake/CakePdf.svg?style=flat-square)](https://packagist.org/packages/friendsofcake/CakePdf)
@@ -8,10 +9,7 @@
 Plugin containing CakePdf lib which will use a PDF engine to convert HTML to PDF.
 
 Engines included in the plugin:
-* DomPdf (^0.8)
 * Mpdf (^8.0.4)
-* Tcpdf (^6.3)
-* WkHtmlToPdf **RECOMMENDED ENGINE**
 
 Community maintained engines:
 * [PDFreactor](https://github.com/jmischer/cake-pdfreactor)
@@ -19,7 +17,7 @@ Community maintained engines:
 
 ## Requirements
 
-* One of the following render engines: DomPdf, Mpdf, Tcpdf or wkhtmltopdf
+* One of the following render engines: Mpdf
 * pdftk (optional) See: http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/
 
 
