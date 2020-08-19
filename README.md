@@ -1,5 +1,6 @@
 # CakePdf plugin
 
+This project is a fork of https://github.com/FriendsOfCake/CakePdf made especially for mpdf
 
 [![Build Status](https://img.shields.io/travis/FriendsOfCake/CakePdf/master.svg?style=flat-square)](https://travis-ci.org/FriendsOfCake/CakePdf)
 [![Total Downloads](https://img.shields.io/packagist/dt/friendsofcake/CakePdf.svg?style=flat-square)](https://packagist.org/packages/friendsofcake/CakePdf)
@@ -8,10 +9,7 @@
 Plugin containing CakePdf lib which will use a PDF engine to convert HTML to PDF.
 
 Engines included in the plugin:
-* DomPdf (^0.8)
-* Mpdf (^7.0)
-* Tcpdf (^6.2)
-* WkHtmlToPdf **RECOMMENDED ENGINE**
+* Mpdf (^8.0.4)
 
 Community maintained engines:
 * [PDFreactor](https://github.com/jmischer/cake-pdfreactor)
@@ -20,7 +18,7 @@ Community maintained engines:
 ## Requirements
 
 * CakePHP 3.4+
-* One of the following render engines: DomPdf, Mpdf, Tcpdf or wkhtmltopdf
+* One of the following render engines: DomPdf
 * pdftk (optional) See: http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/
 
 
@@ -29,21 +27,12 @@ Community maintained engines:
 Using [Composer](http://getcomposer.org):
 
 ```
-composer require friendsofcake/cakepdf
+composer require androideo/cakepdf
 ```
-
-CakePdf does not include any of the supported PDF engines, you need to install
-the ones you intend to use yourself.
-The recommend wkhtmltopdf engine can be downloaded from http://wkhtmltopdf.org/,
-by default CakePdf expects the wkhtmltopdf binary to be located in /usr/bin/wkhtmltopdf.
-If you are using wkhtmltopdf in Windows, remove any spaces in the path name. For example
-use `C:/Progra~1/wkhtmltopdf/bin/wkhtmltopdf.exe`
 
 DomPdf, Mpdf and Tcpdf can be installed via composer using one of the following commands:
 
 ```
-composer require dompdf/dompdf
-composer require tecnickcom/tcpdf
 composer require mpdf/mpdf
 ```
 
@@ -95,9 +84,6 @@ Configuration options:
   * binary: Binary file to use (Only for wkhtmltopdf)
   * cwd: current working directory (Only for wkhtmltopdf)
   * options: Engine specific options. Currently used for following engine:
-    * `WkHtmlToPdfEngine`: The options are passed as CLI arguments
-    * `TexToPdfEngine`: The options are passed as CLI arguments
-    * `DomPdfEngine`: The options are passed to constructor of `Dompdf` class
     * `MpdfEngine`: The options are passed to constructor of `Mpdf` class
 * crypto: Crypto engine to be used, or an array of crypto config options
   * className: Crypto class to use
@@ -114,19 +100,41 @@ Configuration options:
 
 Example:
 ```php
-<?php
-    Configure::write('CakePdf', [
-        'engine' => 'CakePdf.WkHtmlToPdf',
-        'margin' => [
-            'bottom' => 15,
-            'left' => 50,
-            'right' => 30,
-            'top' => 45
-        ],
-        'orientation' => 'landscape',
-        'download' => true
-    ]);
-?>
+Configure::write('CakePdf', [
+    'engine' => 'CakePdf.Mpdf',
+    'margin' => [
+        'bottom' => 15,
+        'left' => 50,
+        'right' => 30,
+        'top' => 45
+    ],
+    'orientation' => 'landscape',
+    'download' => true,
+                'customFontDir' => WWW_ROOT. 'font/dinpro',
+            'customFontArray' => [
+                'dinproregular' => [
+                    'R' => 'DINPro-Regular.ttf',
+                    'I' => 'DINPro-Regular.ttf',
+                ],
+                'dinprolight' => [
+                    'R' => 'DINPro-Light.ttf',
+                    'I' => 'DINPro-Light.ttf',
+                ],
+                'dinpromedium' => [
+                    'R' => 'DINPro-Mediumtr.ttf',
+                    'I' => 'DINPro-Mediumtr.ttf',
+                ],
+            ],
+            'headerOnFirstPage' => false,
+            'header' => '<img src="'.WWW_ROOT.'img'.DS.'logo.png" style="width:120px;float:right"/>',
+                'footer' => '<table width="100%">
+         <tr>
+                 <td width="33%">{DATE j-m-Y}</td>
+                 <td width="33%" align="center">{PAGENO}/{nbpg}</td>
+             <td width="33%" style="text-align: right;">My document</td>
+            </tr>
+         </table>'
+]);
 
 <?php
     class InvoicesController extends AppController
