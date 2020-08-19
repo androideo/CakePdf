@@ -65,13 +65,13 @@ class MpdfEngine extends AbstractPdfEngine
 
         $options = [
             'fontDir' => array_merge($fontDirs, [
-                $this->_Pdf->getCustomFontDir(),
+                $this->_Pdf->customFontDir(),
             ]),
             'fontdata' => 
                 $fontData + 
-                $this->_Pdf->getCustomFontArray()
+                $this->_Pdf->customFontArray()
             ],
-            'default_font' => array_key_first($this->_Pdf->getCustomFontArray()),
+            'default_font' => array_key_first($this->_Pdf->customFontArray()),
             'mode' => $this->_Pdf->encoding(),
             'format' => $format,
             'orientation' => $orientation,
