@@ -230,6 +230,13 @@ class CakePdf
         'annotate',
         'fill_in',
     ];
+    
+    protected $_headerOnFirstPage = true;
+    
+    protected $_customFontDir = true;
+    
+    protected $_customFontArray = true;
+    
 
     /**
      * Constructor
@@ -263,6 +270,9 @@ class CakePdf
             'cache',
             'delay',
             'windowStatus',
+            'headerOnFirstPage',
+            'customFontDir',
+            'customFontArray'
         ];
         foreach ($options as $option) {
             if (isset($config[$option])) {
@@ -431,6 +441,36 @@ class CakePdf
             return $this->_pageSize;
         }
         $this->_pageSize = $pageSize;
+
+        return $this;
+    }
+    
+    public function customFontArray(?array $customFontArray = null)
+    {
+        if ($customFontArray === null) {
+            return $this->_customFontArray;
+        }
+        $this->_customFontArray = $customFontArray;
+
+        return $this;
+    }
+    
+    public function customFontDir(?string $customFontDir = null)
+    {
+        if ($customFontDir === null) {
+            return $this->_customFontDir;
+        }
+        $this->_customFontDir = $customFontDir;
+
+        return $this;
+    }
+    
+   public function headerOnFirstPage(?boolean $headerOnFirstPage = null)
+    {
+        if ($headerOnFirstPage === null) {
+            return $this->_headerOnFirstPage;
+        }
+        $this->_headerOnFirstPage = $headerOnFirstPage;
 
         return $this;
     }
