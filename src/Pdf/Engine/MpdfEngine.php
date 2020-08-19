@@ -21,7 +21,7 @@ class MpdfEngine extends AbstractPdfEngine
  
         $mpdf->WriteHTML($this->_Pdf->html());
 
-        $mpdf->Output();
+        return $mpdf->Output('', Destination::STRING_RETURN);
     }
 
     /**
