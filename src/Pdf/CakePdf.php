@@ -261,6 +261,8 @@ class CakePdf
             'pageSize',
             'orientation',
             'margin',
+            'header',
+            'footer',
             'title',
             'encoding',
             'protect',
@@ -465,7 +467,7 @@ class CakePdf
         return $this;
     }
     
-   public function headerOnFirstPage(?boolean $headerOnFirstPage = null)
+   public function headerOnFirstPage(?bool $headerOnFirstPage = null)
     {
         if ($headerOnFirstPage === null) {
             return $this->_headerOnFirstPage;
@@ -515,17 +517,13 @@ class CakePdf
      * @param null|string $right right side footer
      * @return mixed
      */
-    public function footer($left = null, ?string $center = null, ?string $right = null)
+    public function footer(?string $footer = null)
     {
-        if ($left === null && $center === null && $right === null) {
+        if ($footer === null) {
             return $this->_footer;
         }
 
-        if (is_array($left)) {
-            extract($left, EXTR_IF_EXISTS);
-        }
-
-        $this->_footer = compact('left', 'center', 'right');
+        $this->_footer = $footer;
 
         return $this;
     }
@@ -538,17 +536,13 @@ class CakePdf
      * @param null|string $right right side header
      * @return mixed
      */
-    public function header($left = null, ?string $center = null, ?string $right = null)
+    public function header(?string $header = null)
     {
-        if ($left === null && $center === null && $right === null) {
+        if ($header === null) {
             return $this->_header;
         }
 
-        if (is_array($left)) {
-            extract($left, EXTR_IF_EXISTS);
-        }
-
-        $this->_header = compact('left', 'center', 'right');
+        $this->_header = $header;
 
         return $this;
     }
