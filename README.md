@@ -84,9 +84,6 @@ Configuration options:
   * binary: Binary file to use (Only for wkhtmltopdf)
   * cwd: current working directory (Only for wkhtmltopdf)
   * options: Engine specific options. Currently used for following engine:
-    * `WkHtmlToPdfEngine`: The options are passed as CLI arguments
-    * `TexToPdfEngine`: The options are passed as CLI arguments
-    * `DomPdfEngine`: The options are passed to constructor of `Dompdf` class
     * `MpdfEngine`: The options are passed to constructor of `Mpdf` class
 * crypto: Crypto engine to be used, or an array of crypto config options
   * className: Crypto class to use
@@ -104,7 +101,7 @@ Configuration options:
 Example:
 ```php
 Configure::write('CakePdf', [
-    'engine' => 'CakePdf.WkHtmlToPdf',
+    'engine' => 'CakePdf.Mpdf',
     'margin' => [
         'bottom' => 15,
         'left' => 50,
@@ -112,7 +109,31 @@ Configure::write('CakePdf', [
         'top' => 45
     ],
     'orientation' => 'landscape',
-    'download' => true
+    'download' => true,
+                'customFontDir' => WWW_ROOT. 'font/dinpro',
+            'customFontArray' => [
+                'dinproregular' => [
+                    'R' => 'DINPro-Regular.ttf',
+                    'I' => 'DINPro-Regular.ttf',
+                ],
+                'dinprolight' => [
+                    'R' => 'DINPro-Light.ttf',
+                    'I' => 'DINPro-Light.ttf',
+                ],
+                'dinpromedium' => [
+                    'R' => 'DINPro-Mediumtr.ttf',
+                    'I' => 'DINPro-Mediumtr.ttf',
+                ],
+            ],
+            'headerOnFirstPage' => false,
+            'header' => '<img src="'.WWW_ROOT.'img'.DS.'logo.png" style="width:120px;float:right"/>',
+                'footer' => '<table width="100%">
+         <tr>
+                 <td width="33%">{DATE j-m-Y}</td>
+                 <td width="33%" align="center">{PAGENO}/{nbpg}</td>
+             <td width="33%" style="text-align: right;">My document</td>
+            </tr>
+         </table>'
 ]);
 ```
 
