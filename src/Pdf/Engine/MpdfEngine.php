@@ -1,6 +1,4 @@
 <?php
-declare(strict_types=1);
-
 namespace CakePdf\Pdf\Engine;
 
 use Mpdf\Mpdf;
@@ -15,28 +13,15 @@ class MpdfEngine extends AbstractPdfEngine
      */
     public function output(): string
     {
-        $Mpdf = $this->_createInstance($options);
-        
-        if(!this->_Pdf->headerOnFirstPage())
-            $Mpf->AddPage('','');
-        
-        $header = $this->_Pdf->header();
-        foreach ($header as $location => $html) {
-            if ($html !== null) {
-                $Mpf->SetHTMLHeader($html);
-            }
-        }
-        
-        $footer = $this->_Pdf->footer();
-        foreach ($footer as $location => $html) {
-            if ($html !== null) {
-                $Mpf->SetHTMLFooter($html);
-            }
-        }
-        
-        $Mpdf->WriteHTML($this->_Pdf->html());
+        $mpdf = $this->_createInstance();
 
-        return $Mpdf->Output('', Destination::STRING_RETURN);
+        $mpdf->AddPage('','');
+        $mpdf->SetHTMLHeader($this->_Pdf->header());
+        $mpdf->SetHTMLFooter($this->_Pdf->footer());
+ 
+        $mpdf->WriteHTML($this->_Pdf->html());
+
+        $mpdf->Output();
     }
 
     /**
@@ -45,7 +30,7 @@ class MpdfEngine extends AbstractPdfEngine
      * @param array $options The engine options.
      * @return \Mpdf\Mpdf
      */
-    protected function _createInstance($options): Mpdf
+    protected function _createInstance(): Mpdf
     {
         $orientation = $this->_Pdf->orientation() === 'landscape' ? 'L' : 'P';
         $format = $this->_Pdf->pageSize();
@@ -59,26 +44,31 @@ class MpdfEngine extends AbstractPdfEngine
         
         $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
         $fontDirs = $defaultConfig['fontDir'];
+        if(is_string($this->_Pdf->customFontDir()))
+            $fontDirs = array_merge($fontDirs, [$this->_Pdf->customFontDir()]);
 
         $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
         $fontData = $defaultFontConfig['fontdata'];
+        if(is_array($this->_Pdf->customFontArray()))
+            $fontData = $fontData + $this->_Pdf->customFontArray();
+        $default_font = (is_array($this->_Pdf->customFontArray())? array_key_first($this->_Pdf->customFontArray()): '');
 
         $options = [
-            'fontDir' => array_merge($fontDirs, [
-                $this->_Pdf->customFontDir(),
-            ]),
-            'fontdata' => 
-                $fontData + 
-                $this->_Pdf->customFontArray()
-            ],
-            'default_font' => array_key_first($this->_Pdf->customFontArray()),
+            'debug' => true,
+            'fontDir' => $fontDirs,
+            'fontdata' => $fontData,
+            'default_font' => $default_font,
             'mode' => $this->_Pdf->encoding(),
             'format' => $format,
             'orientation' => $orientation,
             'tempDir' => TMP,
+            'setAutoTopMargin' => 'pad',
+            'setAutoBottomMargin' => 'pad',
+            'default_font_size' => 10
         ];
+       
         $options = array_merge($options, (array)$this->getConfig('options'));
-                        
-        return new Mpdf($options);
+      
+        return new \Mpdf\Mpdf($options);
     }
 }
